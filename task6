@@ -1,0 +1,157 @@
+Algorithm
+1) Start.
+2) Read the number of rides.
+3) Read the ride type and distance.
+4) Select the vehicle: Bike, Auto, or Cab.
+6) Calculate fare based on the distance.
+7) If the distance or ride type is invalid, print "Invalid Booking".
+8) Print the fare.
+9) Stop.
+program:
+import java.util.Scanner;
+
+
+abstract class Vehicle {
+
+    public abstract double calculateFare(double distance);
+}
+
+
+class Bike extends Vehicle {
+
+    @Override
+    public double calculateFare(double distance) {
+        return distance * 5;
+    }
+}
+
+
+class Auto extends Vehicle {
+
+    @Override
+    public double calculateFare(double distance) {
+        return distance * 12;
+    }
+}
+
+
+class Cab extends Vehicle {
+
+    @Override
+    public double calculateFare(double distance) {
+        return distance * 12;
+    }
+}
+
+s
+class Driver {
+
+    String name;
+
+    Driver(String name) {
+        this.name = name;
+    }
+}
+
+
+class Rider {
+
+    String name;
+
+    Rider(String name) {
+        this.name = name;
+    }
+}
+
+
+class Trip {
+
+    private Driver driver;
+    private Rider rider;
+    private Vehicle vehicle;
+    private double distance;
+
+    Trip(Driver driver, Rider rider,
+         Vehicle vehicle, double distance) {
+
+        if (distance <= 0) {
+            throw new IllegalArgumentException(
+                "Distance must be greater than zero"
+            );
+        }
+
+        this.driver = driver;
+        this.rider = rider;
+        this.vehicle = vehicle;
+        this.distance = distance;
+    }
+
+    public double getFare() {
+        return vehicle.calculateFare(distance);
+    }
+}
+
+
+public class RideSharingPlatform {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        for (int i = 0; i < n; i++) {
+
+            String rideType = sc.next();
+            double distance = sc.nextDouble();
+
+            try {
+
+                Vehicle vehicle;
+
+              
+                if (rideType.equalsIgnoreCase("Bike")) {
+                    vehicle = new Bike();
+                } 
+                else if (rideType.equalsIgnoreCase("Auto")) {
+                    vehicle = new Auto();
+                } 
+                else if (rideType.equalsIgnoreCase("Cab")) {
+                    vehicle = new Cab();
+                } 
+                else {
+                    throw new IllegalArgumentException(
+                        "Invalid ride type"
+                    );
+                }
+
+                Driver driver = new Driver("Driver");
+                Rider rider = new Rider("Rider");
+
+                Trip trip = new Trip(
+                    driver,
+                    rider,
+                    vehicle,
+                    distance
+                );
+
+                System.out.println(trip.getFare());
+
+            } 
+            catch (IllegalArgumentException e) {
+                System.out.println("Invalid Booking");
+            }
+        }
+
+        sc.close();
+    }
+}
+sample input:
+3
+Bike 10
+Auto 5
+Cab 8
+sample output:
+50.0
+60.0
+96.0
